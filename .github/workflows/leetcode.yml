@@ -18,15 +18,23 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Clone LeetCode Sync Repo
-        run: |
-          git clone https://github.com/akarsh1995/leetcode-sync.git
+      - name: Install dependencies
+        run: npm install axios fs
 
-      - name: Run Sync Script
+      - name: Fetch and Save LeetCode Submissions
         run: |
-          cd leetcode-sync
-          npm install
-          node index.js
-        env:
-          LEETCODE_SESSION: ${{ secrets.LEETCODE_SESSION }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          node <<EOF
+          const fs = require('fs');
+
+          // Dummy file (for now just to test commits)
+          const date = new Date().toISOString();
+          fs.writeFileSync('leetcode-log.txt', 'Updated at: ' + date);
+          EOF
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add .
+          git commit -m "Sync LeetCode"
+          git push
