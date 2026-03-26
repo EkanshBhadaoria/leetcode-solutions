@@ -20,13 +20,13 @@ jobs:
 
       - name: Clone LeetCode Sync Repo
         run: |
-          git clone https://github.com/leetcode-tools/leetcode-sync.git
+          git clone https://github.com/akarsh1995/leetcode-sync.git
 
       - name: Run Sync Script
         run: |
           cd leetcode-sync
           npm install
-          npm start
+          node index.js
         env:
           LEETCODE_SESSION: ${{ secrets.LEETCODE_SESSION }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
