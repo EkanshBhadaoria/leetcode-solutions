@@ -1,0 +1,32 @@
+name: Sync LeetCode
+
+on:
+  schedule:
+    - cron: '0 0 * * *'   # runs daily
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Clone LeetCode Sync Repo
+        run: |
+          git clone https://github.com/joshcai/leetcode-sync.git
+
+      - name: Run Sync Script
+        run: |
+          cd leetcode-sync
+          npm install
+          node index.js
+        env:
+          LEETCODE_SESSION: ${{ secrets.LEETCODE_SESSION }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
